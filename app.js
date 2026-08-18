@@ -31,7 +31,7 @@ const el = {
   totalNetoMes: document.getElementById("totalNetoMes"),
 };
 
-let supabase = null;
+let db = null;
 
 function fmtMoney(n) {
   return n.toLocaleString("es-CO", { style: "currency", currency: "COP", maximumFractionDigits: 0 });
@@ -113,7 +113,7 @@ function renderLista() {
 }
 
 async function cargarTransacciones() {
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("transacciones")
     .select("*")
     .order("fecha", { ascending: false })
@@ -130,7 +130,7 @@ async function cargarTransacciones() {
 }
 
 async function eliminarTx(id) {
-  const { error } = await supabase.from("transacciones").delete().eq("id", id);
+  const { error } = await db.from("transacciones").delete().eq("id", id);
   if (error) {
     setFormMsg("No se pudo eliminar: " + error.message, "error");
     return;
@@ -151,7 +151,7 @@ async function guardarTx(e) {
     nota: el.nota.value || null,
   };
 
-  const { error } = await supabase.from("transacciones").insert(payload);
+  const { error } = await db.from("transacciones").insert(payload);
 
   el.submitBtn.disabled = false;
 
@@ -169,10 +169,10 @@ async function guardarTx(e) {
 }
 
 async function ensureAuth() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await db.auth.getSession();
   if (session) return;
 
-  const { error } = await supabase.auth.signInAnonymously();
+  const { error } = await db.auth.signInAnonymously();
   if (error) {
     setFormMsg("No se pudo iniciar sesión: " + error.message, "error");
     throw error;
@@ -180,22 +180,26 @@ async function ensureAuth() {
 }
 
 async function init() {
-  if (!window.SUPABASE_CONFIG || window.SUPABASE_CONFIG.url.includes("TU-PROYECTO")) {
-    setFormMsg("Falta configurar config.js con tu URL y anon key de Supabase.", "error");
-    return;
-  }
-
-  supabase = window.supabase.createClient(
-    window.SUPABASE_CONFIG.url,
-    window.SUPABASE_CONFIG.anonKey
-  );
-
   el.fecha.valueAsDate = new Date();
   renderCategorias();
 
   el.btnIngreso.addEventListener("click", () => setTipo("ingreso"));
   el.btnEgreso.addEventListener("click", () => setTipo("egreso"));
   el.form.addEventListener("submit", guardarTx);
+
+  const sinConfigurar =
+    !window.SUPABASE_CONFIG || window.SUPABASE_CONFIG.url.includes("TU-PROYECTO");
+
+  if (sinConfigurar) {
+    setFormMsg("Falta configurar config.js con tu URL y anon key de Supabase.", "error");
+    el.submitBtn.disabled = true;
+    return;
+  }
+
+  db = window.supabase.createClient(
+    window.SUPABASE_CONFIG.url,
+    window.SUPABASE_CONFIG.anonKey
+  );
 
   try {
     await ensureAuth();
