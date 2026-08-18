@@ -1,4 +1,4 @@
-const CACHE = "cuentas-v1";
+const CACHE = "cuentas-v2";
 const ASSETS = ["./", "index.html", "style.css", "app.js", "config.js", "manifest.json"];
 
 self.addEventListener("install", (event) => {
@@ -18,6 +18,12 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
   event.respondWith(
-    caches.match(event.request).then((cached) => cached || fetch(event.request))
+    fetch(event.request)
+      .then((res) => {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(event.request, copy));
+        return res;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
