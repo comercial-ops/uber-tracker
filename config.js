@@ -4,6 +4,5 @@
 // esta clave esté "escondida". Por eso este archivo SÍ se sube al repo.
 window.SUPABASE_CONFIG = {
   url: "https://qdlxtpryelsypdotjqjl.supabase.co",
-  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFkbHh0cHJ5ZWxzeXBkb3RqcWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNjM1NzksImV4cCI6MjEwMjYzOTU3OX0.I5Afxofrx3u2enxg-ZrsJp2JMYXLazlfkcP8NiVVYzY
-",
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFkbHh0cHJ5ZWxzeXBkb3RqcWpsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODcwNjM1NzksImV4cCI6MjEwMjYzOTU3OX0.I5Afxofrx3u2enxg-ZrsJp2JMYXLazlfkcP8NiVVYzY",
 };
