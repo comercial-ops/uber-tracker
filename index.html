@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Mis Cuentas - Conductor</title>
+
+<!-- Instalable en iPhone: Safari > Compartir > "Agregar a pantalla de inicio" -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Mis Cuentas" />
+<meta name="theme-color" content="#0f172a" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="manifest" href="manifest.json" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="app-header">
+  <h1>Mis Cuentas</h1>
+  <p class="subtitle">Ingresos y egresos del día</p>
+</header>
+
+<section class="totals" id="totals">
+  <div class="totals-row">
+    <div class="total-card ingreso">
+      <span class="label">Ingresos (mes)</span>
+      <span class="value" id="totalIngresosMes">$0</span>
+    </div>
+    <div class="total-card egreso">
+      <span class="label">Egresos (mes)</span>
+      <span class="value" id="totalEgresosMes">$0</span>
+    </div>
+  </div>
+  <div class="total-card neto">
+    <span class="label">Neto del mes</span>
+    <span class="value" id="totalNetoMes">$0</span>
+  </div>
+</section>
+
+<section class="form-section">
+  <div class="tipo-toggle">
+    <button type="button" class="tipo-btn active" data-tipo="ingreso" id="btnIngreso">+ Ingreso</button>
+    <button type="button" class="tipo-btn" data-tipo="egreso" id="btnEgreso">- Egreso</button>
+  </div>
+
+  <form id="txForm">
+    <label>
+      Categoría
+      <select id="categoria" required></select>
+    </label>
+
+    <label>
+      Monto
+      <input type="number" id="monto" inputmode="decimal" step="0.01" min="0.01" placeholder="0.00" required />
+    </label>
+
+    <label>
+      Fecha
+      <input type="date" id="fecha" required />
+    </label>
+
+    <label>
+      Nota (opcional)
+      <input type="text" id="nota" placeholder="Ej: viaje aeropuerto" maxlength="140" />
+    </label>
+
+    <button type="submit" id="submitBtn" class="submit-btn">Guardar</button>
+    <p class="form-msg" id="formMsg"></p>
+  </form>
+</section>
+
+<section class="list-section">
+  <h2>Movimientos recientes</h2>
+  <ul id="txList" class="tx-list"></ul>
+  <p id="emptyMsg" class="empty-msg">Todavía no hay movimientos.</p>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
